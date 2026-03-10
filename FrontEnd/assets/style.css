@@ -208,3 +208,8 @@ footer nav ul {
 	background-color: #1D6154;
 	color: white;
 }
+
+.filtres button.active {
+    background-color: #1D6154;
+    color: white;
+}
