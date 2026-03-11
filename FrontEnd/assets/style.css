@@ -30,7 +30,13 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+
 }
+
+main {
+    flex: 1;
+}
+
 ol, ul {
 	list-style: none;
 }
@@ -52,7 +58,12 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color:#F5F5EF;
+	min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -212,4 +223,67 @@ footer nav ul {
 .filtres button.active {
     background-color: #1D6154;
     color: white;
+}
+
+.login {
+	text-decoration: none;
+	color: inherit;
+}
+
+#login {
+	width: 40%;
+	margin: auto;
+	margin-top: 5%;
+
+}
+#login > * {
+	text-align: center;
+}
+#login h2{
+	margin-bottom: 20px;
+}
+#login form {
+	text-align: left;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#login label {
+	margin: 2em 0 1em 0;
+}
+#login textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login input[type="submit"] {
+    width: 45%;
+}
+
+.login {
+	text-decoration: none;
+	color: inherit;
+}
+
+.mdp {
+	display: flex;
+	justify-content: center;
+	color: black;
+}
+
+.logo {
+	text-decoration: none;
+	color: inherit;
+}
+
+.mentions {
+	font-weight: 300;
+	font-size: 14px;
 }
