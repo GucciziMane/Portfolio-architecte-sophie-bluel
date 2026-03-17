@@ -272,6 +272,10 @@ footer nav ul {
 	color: inherit;
 }
 
+.login-nav {
+	font-weight: 700;
+}
+
 .mdp {
 	display: flex;
 	justify-content: center;
@@ -286,4 +290,23 @@ footer nav ul {
 .mentions {
 	font-weight: 300;
 	font-size: 14px;
+}
+
+#bandeau-edition {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+	font-family: 'Work Sans';
+	font-size: 14px;
+    font-weight: 400;
+}
+
+#btn-modifier {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Work Sans';
+    font-size: 14px;
+    font-weight: 400;
 }

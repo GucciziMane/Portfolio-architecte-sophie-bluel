@@ -73,4 +73,36 @@ function filtrerProjets(categoryId) {
   }
 }
 
+const token = localStorage.getItem('token');
+
+if (token) {
+  const loginLi = document.querySelector('nav li a.login');
+    loginLi.textContent = 'logout';
+    loginLi.href = '#';
+
+  const filtres = document.querySelector('.filtres');
+    filtres.style.display = 'none';
+
+  const bandeau = document.createElement('div');
+    bandeau.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
+    bandeau.id = 'bandeau-edition';
+    document.documentElement.prepend(bandeau);   
+
+  const btnModifier = document.createElement('button');
+    btnModifier.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
+    btnModifier.id = 'btn-modifier';
+
+  const titrePortfolio = document.querySelector('#portfolio h2');
+        titrePortfolio.style.display = 'flex';
+        titrePortfolio.style.alignItems = 'center';
+        titrePortfolio.style.justifyContent = 'center';
+        titrePortfolio.style.gap = '20px';
+        titrePortfolio.appendChild(btnModifier);
+    
+  loginLi.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    });
+}
+
 init();
