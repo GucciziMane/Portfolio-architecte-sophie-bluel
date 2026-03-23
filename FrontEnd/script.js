@@ -75,6 +75,27 @@ function filtrerProjets(categoryId) {
 
 const token = localStorage.getItem('token');
 
+function afficherModaleGalerie() {
+  const modaleGalerie = document.querySelector('.modale-galerie');
+  modaleGalerie.innerHTML = '';
+
+  for (let i = 0; i < works.length; i++) {
+    const work = works[i];
+
+    const figure = document.createElement('figure');
+    const img = document.createElement('img');
+    const btnSupprimer = document.createElement('button');
+
+    img.src = work.imageUrl;
+    img.alt = work.title;
+    btnSupprimer.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+
+    figure.appendChild(img);
+    figure.appendChild(btnSupprimer);
+    modaleGalerie.appendChild(figure);
+    }
+  } 
+
 if (token) {
   const loginLi = document.querySelector('nav li a.login');
     loginLi.textContent = 'logout';
@@ -103,6 +124,23 @@ if (token) {
       localStorage.removeItem('token');
       window.location.href = 'index.html';
     });
+    
+    const modal = document.querySelector('#modale');
+
+    document.querySelectorAll('.btn-fermer').forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    });
+
+    document.querySelector('.overlay').addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    btnModifier.addEventListener('click', () => {
+    modal.style.display = 'block';
+    afficherModaleGalerie();
+});
 }
 
 init();

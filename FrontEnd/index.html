@@ -65,6 +65,32 @@
 		</ul>
 	</nav>
 </footer>
+		<div id="modale">
+			<div class="overlay">
+			</div>
+			<div class="modale-content">
+					<div id="vue-galerie">
+						<button class="btn-fermer"><i class="fa-solid fa-xmark"></i></button>
+						<h2>Galerie photo</h2>
+						<div class="modale-galerie"></div>
+						<hr>
+						<button id="btn-ajouter-photo">Ajouter une photo</button>
+					</div>
+				<div id="vue-ajout">
+					<button class="btn-retour"><i class="fa-solid fa-arrow-left"></i></button>
+					<button class="btn-fermer"><i class="fa-solid fa-xmark"></i></button>
+					<h2>Ajouter une photo</h2>
+					<form id="form-ajout">
+						<input type="file" accept="image/*">
+						<label for="titre">Titre</label>
+						<input type="text" id="titre">
+						<label for="categorie">Catégorie</label>
+						<select id="categorie"></select>
+						<button type="submit">Valider</button>
+					</form>
+				</div>
+			</div>
+		</div>
 <script src="script.js"></script>
 </body>
 </html>

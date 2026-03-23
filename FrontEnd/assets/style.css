@@ -310,3 +310,105 @@ footer nav ul {
     font-size: 14px;
     font-weight: 400;
 }
+
+#modale {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modale-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 40px;
+    width: 500px;
+    border-radius: 10px;
+    z-index: 101;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modale-content h2 {
+    font-size: 18px;
+    text-align: center;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.btn-fermer {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.modale-galerie {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 10px;
+}
+
+.modale-galerie figure {
+    position: relative;
+}
+
+.modale-galerie img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modale-galerie button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: black;
+    color: white;
+    border: none;
+	border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+	height: 17px;
+}
+
+#vue-galerie hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+#btn-ajouter-photo {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #1D6154;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    padding: 15px 40px;
+    cursor: pointer;
+    font-family: 'Syne';
+    font-weight: 700;
+}
+
+#vue-ajout {
+    display: none;
+}
