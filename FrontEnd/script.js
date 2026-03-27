@@ -6,10 +6,8 @@ const token = localStorage.getItem('token');
 async function init() {
     await afficherProjets();
     await afficherfiltres();
-    if (token) setupAdmin(); // On lance la partie Admin seulement si connecté
+    if (token) setupAdmin(); 
 }
-
-// --- CHARGEMENT DES DONNÉES ---
 
 async function afficherProjets() {
     const reponse = await fetch('http://localhost:5678/api/works');
@@ -32,14 +30,12 @@ async function afficherfiltres() {
     categories = await reponse.json();
     const categoriesContainer = document.querySelector('.filtres');
 
-    // Bouton "Tous"
     const buttonTous = document.querySelector('[data-categorie="tous"]');
     buttonTous.addEventListener('click', () => {
         refreshFiltres(buttonTous);
         afficherProjets();
     });
 
-    // Boutons Catégories
     categories.forEach(category => {
         const button = document.createElement('button');
         button.textContent = category.name;
@@ -61,10 +57,9 @@ function filtrerProjets(categoryId) {
     works.filter(w => w.categoryId === categoryId).forEach(ajouterProjet);
 }
 
-// --- PARTIE ADMINISTRATEUR (MODALE) ---
 
 function setupAdmin() {
-    // 1. Changements visuels sur la page
+
     document.querySelector('.filtres').style.display = 'none';
     document.querySelector('nav li a.login').textContent = 'logout';
     document.querySelector('nav li a.login').addEventListener('click', (e) => {
@@ -73,14 +68,12 @@ function setupAdmin() {
         window.location.reload();
     });
 
-    // Ajout du bandeau et du bouton modifier
     document.body.insertAdjacentHTML('afterbegin', `<div id="bandeau-edition"><i class="fa-regular fa-pen-to-square"></i> Mode édition</div>`);
     const btnModifier = document.createElement('button');
     btnModifier.id = 'btn-modifier';
     btnModifier.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
     document.querySelector('#portfolio h2').appendChild(btnModifier);
 
-    // 2. Gestion de la modale
     const modal = document.querySelector('#modale');
     const vueGalerie = document.getElementById('vue-galerie');
     const vueAjout = document.getElementById('vue-ajout');
@@ -106,7 +99,6 @@ function setupAdmin() {
         resetFormulaire();
     });
 
-    // 3. Gestion de l'image (Preview)
     inputFile.addEventListener('change', () => {
         const file = inputFile.files[0];
         if (file) {
@@ -122,7 +114,6 @@ function setupAdmin() {
         }
     });
 
-    // 4. Envoi du formulaire
     formAjout.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(formAjout);
@@ -141,14 +132,11 @@ function setupAdmin() {
         }
     });
 
-    // Validation et Fermeture
     formAjout.addEventListener('input', verifierFormulaire);
     document.querySelectorAll('.btn-fermer, .overlay').forEach(btn => {
         btn.addEventListener('click', () => { modal.style.display = 'none'; resetFormulaire(); });
     });
 }
-
-// --- FONCTIONS SUPPORTS ---
 
 function verifierFormulaire() {
     const btn = document.getElementById('btn-valider-form');
@@ -177,7 +165,7 @@ function remplirSelectCategories() {
 
 function afficherModaleGalerie() {
     const container = document.querySelector('.modale-galerie');
-    container.innerHTML = ''; // On vide pour éviter les doublons
+    container.innerHTML = '';
 
     works.forEach(work => {
         const figure = document.createElement('figure');
@@ -188,7 +176,6 @@ function afficherModaleGalerie() {
             </span>
         `;
         
-        // Ajout de l'événement clic sur la poubelle
         figure.querySelector('.btn-suppr').addEventListener('click', () => {
             supprimerProjet(work.id);
         });
@@ -198,24 +185,20 @@ function afficherModaleGalerie() {
 }
 
 async function supprimerProjet(id) {
-    // 1. Appel API pour supprimer sur le serveur
+
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
     });
 
     if (response.ok) {
-        // 2. Mettre à jour le tableau LOCAL (important pour que les filtres marchent encore)
+
         works = works.filter(work => work.id !== id);
 
-        // 3. MISE À JOUR DE LA PAGE D'ACCUEIL
-        // On vide la galerie principale
         gallery.innerHTML = ''; 
-        // On la remplit avec le nouveau tableau 'works' qui n'a plus l'élément supprimé
+
         works.forEach(work => ajouterProjet(work));
 
-        // 4. MISE À JOUR DE LA MODALE
-        // On rappelle ta fonction pour que la photo disparaisse aussi de la modale
         afficherModaleGalerie();
         
     } else {

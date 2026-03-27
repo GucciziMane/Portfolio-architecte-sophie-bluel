@@ -15,7 +15,6 @@ form.addEventListener('submit', async function(event) {
     const data = await reponse.json();
 
     if (reponse.ok) {
-    console.log('connexion ok, redirection...');
     localStorage.setItem('token', data.token);
     window.location.href = 'index.html';
     } 
