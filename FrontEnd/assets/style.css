@@ -48,6 +48,7 @@ q:before, q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -62,6 +63,7 @@ body {
 	min-height: 100vh;
     display: flex;
     flex-direction: column;
+	padding-top: 40px;
 }
 
 header {
@@ -95,6 +97,15 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
+p {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #3D3D3D;
+    margin-bottom: 15px;
+}
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -133,9 +144,13 @@ li:hover {
 	margin-bottom: 0.5em;
 }
 #portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 30px;             
+    margin-bottom: 50px;   
 }
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -296,10 +311,19 @@ footer nav ul {
     background-color: black;
     color: white;
     text-align: center;
-    padding: 10px;
-	font-family: 'Work Sans';
-	font-size: 14px;
-    font-weight: 400;
+    padding: 15px 0;
+    width: 100%;
+    /* Pour s'assurer qu'il est tout en haut et prend tout l'espace */
+    position: absolute; 
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Work Sans', sans-serif;
 }
 
 #btn-modifier {
@@ -311,50 +335,47 @@ footer nav ul {
     font-weight: 400;
 }
 
+/* --- MODALE : STRUCTURE ET MISE EN PAGE --- */
+
 #modale {
-    display: none;
+    display: none; /* Contrôlé par JS */
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 100;
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modale-content {
-    position: fixed;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    padding: 40px;
-    width: 500px;
+    padding: 60px 105px;
+    width: 430px;
     border-radius: 10px;
-    z-index: 101;
     max-height: 90vh;
     overflow-y: auto;
 }
 
 .modale-content h2 {
-    font-size: 18px;
-    text-align: center;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    font-size: 26px;
     color: black;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 45px;
 }
 
 .btn-fermer {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 30px;
+    right: 30px;
     background: none;
     border: none;
     cursor: pointer;
@@ -362,53 +383,241 @@ footer nav ul {
 }
 
 .modale-galerie {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px 10px;
+    margin-bottom: 45px;
 }
 
 .modale-galerie figure {
     position: relative;
+    width: 100%;
 }
 
 .modale-galerie img {
     width: 100%;
-    height: 100%;
     object-fit: cover;
 }
 
-.modale-galerie button {
+.btn-suppr {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 6px;
+    right: 6px;
     background-color: black;
     color: white;
-    border: none;
-	border-radius: 5px;
+    width: 19px;
+    height: 19px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 5px;
-	height: 17px;
+    font-size: 10px;
 }
 
+/* --- MODALE : ÉLÉMENTS DE PIED DE PAGE --- */
+
 #vue-galerie hr {
-    margin: 20px 0;
     border: none;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #B3B3B3;
+    margin-bottom: 38px;
 }
 
 #btn-ajouter-photo {
-    display: block;
-    margin: 20px auto 0;
     background-color: #1D6154;
     color: white;
     border: none;
     border-radius: 60px;
-    padding: 15px 40px;
-    cursor: pointer;
+    padding: 10px 50px;
+    margin: 0 auto;
+    display: block;
     font-family: 'Syne';
     font-weight: 700;
+    cursor: pointer;
 }
 
+/* --- VUE AJOUT (POUR JS) --- */
+
+/* --- VUE AJOUT (Formulaire complet) --- */
+/* Nettoyage et application du design maquette */
+
 #vue-ajout {
+    display: none; /* Caché par défaut, géré par le JS */
+    padding: 0 20px;
+}
+
+#vue-ajout h2 {
+    margin-bottom: 30px;
+}
+
+.zone-upload {
+    background-color: #E8F1F6;
+    border-radius: 6px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.icone-placeholder {
+    font-size: 60px;
+    color: #B9C5CC;
+    margin-bottom: 15px;
+}
+
+.btn-upload {
+    background-color: #CBD6DC;
+    color: #306685;
+    padding: 10px 33px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.infos-format {
+    font-size: 10px;
+    color: #444;
+}
+
+/* On cache le moche bouton "Choisir un fichier" natif */
+#input-file {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+/* L'image d'aperçu qui doit tout recouvrir quand elle existe */
+.aperçu-image {
+    position: absolute;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+/* Style des labels Titre et Catégorie */
+#form-ajout label:not(.btn-upload) {
+    display: block;
+    text-align: left;
+    margin: 20px 0 10px 0;
+}
+
+#form-ajout input[type="text"], 
+#form-ajout select {
+    width: 100%;
+    height: 50px;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    box-sizing: border-box;
+}
+
+.btn-valider {
+    background-color: #A7A7A7; /* Gris par défaut (non valide) */
+    width: 237px;
+    height: 36px;
+}
+/* Bouton Retour (la flèche) */
+.btn-retour {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: black;
+}
+
+/* --- VUE AJOUT (MAQUETTE FIGMA) --- */
+
+.zone-upload {
+    background-color: #E8F1F6;
+    border-radius: 6px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.icone-placeholder {
+    font-size: 60px;
+    color: #B9C5CC;
+    margin-bottom: 15px;
+}
+
+.btn-upload {
+    background-color: #CBD6DC;
+    color: #306685;
+    padding: 10px 33px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+/* Cache le bouton "Choisir un fichier" par défaut */
+#input-file {
     display: none;
+}
+
+.infos-format {
+    font-size: 10px;
+    color: #444;
+}
+
+/* Image d'aperçu une fois sélectionnée */
+.preview-img {
+    position: absolute;
+    height: 100%;
+    width: auto;
+    top: 0;
+    z-index: 10;
+}
+
+/* Formulaire */
+.groupe-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.groupe-input label {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.groupe-input input, .groupe-input select {
+    height: 50px;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0 15px;
+}
+
+/* Bouton Valider gris (inactif) par défaut */
+.btn-valider {
+    background-color: #A7A7A7;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    width: 237px;
+    height: 36px;
+    margin: 0 auto;
+    display: block;
+    font-family: 'Syne';
+    font-weight: 700;
+    cursor: pointer;
+	margin-top: 40px;
+}
+
+/* État actif du bouton (quand le formulaire sera rempli) */
+.btn-valider.active {
+    background-color: #1D6154;
 }

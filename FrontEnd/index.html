@@ -76,20 +76,36 @@
 						<hr>
 						<button id="btn-ajouter-photo">Ajouter une photo</button>
 					</div>
-				<div id="vue-ajout">
-					<button class="btn-retour"><i class="fa-solid fa-arrow-left"></i></button>
-					<button class="btn-fermer"><i class="fa-solid fa-xmark"></i></button>
-					<h2>Ajouter une photo</h2>
-					<form id="form-ajout">
-						<input type="file" accept="image/*">
-						<label for="titre">Titre</label>
-						<input type="text" id="titre">
-						<label for="categorie">Catégorie</label>
-						<select id="categorie"></select>
-						<button type="submit">Valider</button>
-					</form>
-				</div>
-			</div>
+<div id="vue-ajout">
+    <button class="btn-retour"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="btn-fermer"><i class="fa-solid fa-xmark"></i></button>
+    <h2>Ajout photo</h2>
+
+    <form id="form-ajout">
+        <div class="zone-upload">
+            <i class="fa-regular fa-image icone-placeholder"></i>
+            <label for="input-file" class="btn-upload">+ Ajouter photo</label>
+            <input type="file" id="input-file" accept="image/png, image/jpeg">
+            <p class="infos-format">jpg, png : 4mo max</p>
+            <img src="#" alt="Aperçu" class="preview-img" style="display: none;">
+        </div>
+
+        <div class="groupe-input">
+            <label for="titre">Titre</label>
+            <input type="text" id="titre" name="titre" required>
+        </div>
+
+        <div class="groupe-input">
+            <label for="categorie">Catégorie</label>
+            <div class="select-wrapper">
+                <select id="categorie" name="categorie" required></select>
+            </div>
+        </div>
+
+        <hr class="modale-sep">
+        <button type="submit" class="btn-valider" id="btn-valider-form">Valider</button>
+    </form>
+</div>			</div>
 		</div>
 <script src="script.js"></script>
 </body>
