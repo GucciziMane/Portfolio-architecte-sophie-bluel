@@ -313,12 +313,10 @@ footer nav ul {
     text-align: center;
     padding: 15px 0;
     width: 100%;
-    /* Pour s'assurer qu'il est tout en haut et prend tout l'espace */
     position: absolute; 
     top: 0;
     left: 0;
     z-index: 1000;
-    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -335,10 +333,8 @@ footer nav ul {
     font-weight: 400;
 }
 
-/* --- MODALE : STRUCTURE ET MISE EN PAGE --- */
-
 #modale {
-    display: none; /* Contrôlé par JS */
+    display: none; 
     position: fixed;
     inset: 0;
     z-index: 100;
