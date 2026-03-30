@@ -85,16 +85,34 @@ function afficherModaleGalerie() {
     const figure = document.createElement('figure');
     const img = document.createElement('img');
     const btnSupprimer = document.createElement('div');
+    btnSupprimer.classList.add('btn-suppr');
 
     img.src = work.imageUrl;
     img.alt = work.title;
     btnSupprimer.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    btnSupprimer.addEventListener('click', () => supprimerProjet(work.id));
 
     figure.appendChild(img);
     figure.appendChild(btnSupprimer);
     modaleGalerie.appendChild(figure);
-    }
-  } 
+  }
+}
+
+async function supprimerProjet(id) {
+  const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+
+  if (response.ok) {
+    works = works.filter(work => work.id !== id);
+    gallery.innerHTML = '';
+    works.forEach(work => ajouterProjet(work));
+    afficherModaleGalerie();
+  } else {
+    alert('Erreur lors de la suppression');
+  }
+}
 
 if (token) {
     const loginLi = document.querySelector('nav li a.login');
@@ -123,7 +141,25 @@ if (token) {
     function handleLogout(e) {
         e.preventDefault();
         localStorage.removeItem('token');
-        window.location.reload();
+
+        const bandeau = document.getElementById('bandeau-edition');
+        if (bandeau) bandeau.remove();
+
+        const btn = document.getElementById('btn-modifier');
+        if (btn) btn.remove();
+
+        filtres.style.display = '';
+
+        loginLi.textContent = 'login';
+        loginLi.href = 'login.html';
+        loginLi.removeEventListener('click', handleLogout);
+
+        modal.style.display = 'none';
+
+        titrePortfolio.style.display = '';
+        titrePortfolio.style.alignItems = '';
+        titrePortfolio.style.justifyContent = '';
+        titrePortfolio.style.gap = '';
     }
 
     loginLi.addEventListener('click', handleLogout);
@@ -183,7 +219,6 @@ if (inputFile) {
 
             const reader = new FileReader();
             reader.onload = function (e) {
-                // IMPORTANT : Vérifie que cette classe est BIEN la même dans ton HTML
                 const previewImg = document.querySelector('.preview-img') || document.querySelector('.aperçu-image');
                 
                 if (previewImg) {
@@ -195,7 +230,7 @@ if (inputFile) {
                     document.querySelector('.infos-format').style.display = 'none';
                 }
                 
-                verifierFormulaire(); // On active le bouton vert si le reste est rempli
+                verifierFormulaire(); 
             };
             reader.readAsDataURL(file);
         }
@@ -234,13 +269,11 @@ if (inputFile) {
         });
 
         if (response.ok) {
-            const newWork = await response.json();
-            works.push(newWork); 
-            ajouterProjet(newWork); 
-            
+            gallery.innerHTML = '';
+            await afficherProjets();
+
             resetFormulaire();
             modal.style.display = 'none';
-            alert('Projet ajouté !');
         } else {
             alert('Erreur lors de l\'envoi');
         }
@@ -257,6 +290,22 @@ if (inputFile) {
         modal.style.display = 'none';
         resetFormulaire();
     });
+}
+
+function resetFormulaire() {
+    const form = document.getElementById('form-ajout');
+    if (form) form.reset();
+    const preview = document.querySelector('.preview-img');
+    if (preview) {
+        preview.src = '#';
+        preview.style.display = 'none';
+    }
+    document.querySelectorAll('.icone-placeholder, .btn-upload, .infos-format').forEach(el => el.style.display = '');
+    const btn = document.getElementById('btn-valider-form');
+    if (btn) {
+        btn.classList.remove('active');
+        btn.disabled = true;
+    }
 }
 
 init();
