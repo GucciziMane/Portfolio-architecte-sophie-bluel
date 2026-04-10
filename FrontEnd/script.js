@@ -3,8 +3,14 @@ let categories = [];
 const gallery = document.querySelector('.gallery');
 
 async function init() {
-  await afficherProjets();
+  await chargerProjets();
+  afficherProjets();
   await afficherfiltres();
+}
+
+async function chargerProjets() {
+  const reponse = await fetch('http://localhost:5678/api/works');
+  works = await reponse.json();
 }
 
 function ajouterProjet(work) {
@@ -21,13 +27,11 @@ function ajouterProjet(work) {
   gallery.appendChild(figure);
 }
 
-async function afficherProjets() {
-  const reponse = await fetch('http://localhost:5678/api/works');
-  works = await reponse.json();
+function afficherProjets() {
+  gallery.innerHTML = '';
 
   for (let i = 0; i < works.length; i++) {
-    const work = works[i];
-    ajouterProjet(work);
+    ajouterProjet(works[i]);
   }
 }
 
@@ -42,7 +46,6 @@ async function afficherfiltres() {
   buttonTous.addEventListener('click', () => {
   document.querySelectorAll('.filtres button').forEach(btn => btn.classList.remove('active'));
   buttonTous.classList.add('active');
-  gallery.innerHTML = '';
   afficherProjets(); 
   });
 
@@ -106,8 +109,7 @@ async function supprimerProjet(id) {
 
   if (response.ok) {
     works = works.filter(work => work.id !== id);
-    gallery.innerHTML = '';
-    works.forEach(work => ajouterProjet(work));
+    afficherProjets();
     afficherModaleGalerie();
   } else {
     alert('Erreur lors de la suppression');
@@ -269,12 +271,13 @@ if (inputFile) {
         });
 
         if (response.ok) {
-            gallery.innerHTML = '';
-            await afficherProjets();
-
+            const nouveauProjet = await response.json();
+            works.push(nouveauProjet);
+            afficherProjets();
             resetFormulaire();
             modal.style.display = 'none';
-        } else {
+          }             
+            else {
             alert('Erreur lors de l\'envoi');
         }
     });
