@@ -1,18 +1,22 @@
+// ======= Variables globales ========
 let works = [];
 let categories = [];
 const gallery = document.querySelector('.gallery');
 
+// ====== Initilisation, charge les données et affiche la page ======
 async function init() {
   await chargerProjets();
   afficherProjets();
   await afficherfiltres();
 }
 
+// ====== Récupère les projets depuis l'API (GET)======
 async function chargerProjets() {
   const reponse = await fetch('http://localhost:5678/api/works');
   works = await reponse.json();
 }
 
+// ====== Création d'un élément figure dans le DOM ======
 function ajouterProjet(work) {
   const figure = document.createElement('figure');
   const img = document.createElement('img');
@@ -27,6 +31,7 @@ function ajouterProjet(work) {
   gallery.appendChild(figure);
 }
 
+// ====== Affichage de tous les projets ======
 function afficherProjets() {
   gallery.innerHTML = '';
 
@@ -35,6 +40,7 @@ function afficherProjets() {
   }
 }
 
+// ====== Filtrage des projets par catégorie (récupération des catégories + filtrage côté client)======
 async function afficherfiltres() {
   const reponse = await fetch('http://localhost:5678/api/categories');
   categories = await reponse.json();
@@ -66,6 +72,8 @@ async function afficherfiltres() {
   }
 }
 
+
+//==== Affichage des projets filtrés par catégorie ======
 function filtrerProjets(categoryId) {
   gallery.innerHTML = '';
 
@@ -76,8 +84,11 @@ function filtrerProjets(categoryId) {
   }
 }
 
+//===== Vérification du token =====
 const token = localStorage.getItem('token');
 
+
+//==== Modale : vue galerie (miniature + bouton suppression) ======
 function afficherModaleGalerie() {
   const modaleGalerie = document.querySelector('.modale-galerie');
   modaleGalerie.innerHTML = '';
@@ -101,6 +112,8 @@ function afficherModaleGalerie() {
   }
 }
 
+
+//==== Suppression d'un projet (DELETE avec token) ======
 async function supprimerProjet(id) {
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
     method: 'DELETE',
@@ -116,19 +129,26 @@ async function supprimerProjet(id) {
   }
 }
 
+
+// ===== Mode Édition si token présent ======
 if (token) {
+
+    // --- Login -> Logout ---
     const loginLi = document.querySelector('nav li a.login');
     loginLi.textContent = 'logout';
     loginLi.href = '#';
 
+    // --- Masque les filtres ---
     const filtres = document.querySelector('.filtres');
     filtres.style.display = 'none';
 
+    // --- Création du bandeau "Mode édition" ---
     const bandeau = document.createElement('div');
     bandeau.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
     bandeau.id = 'bandeau-edition';
     document.documentElement.prepend(bandeau);
 
+    // --- Création du bouton "Modifier" ---
     const btnModifier = document.createElement('button');
     btnModifier.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
     btnModifier.id = 'btn-modifier';
@@ -140,6 +160,7 @@ if (token) {
     titrePortfolio.style.gap = '20px';
     titrePortfolio.appendChild(btnModifier);
 
+    // --- Fonction de logout ---
     function handleLogout(e) {
         e.preventDefault();
         localStorage.removeItem('token');
@@ -166,6 +187,7 @@ if (token) {
 
     loginLi.addEventListener('click', handleLogout);
 
+    // --- Sélection des éléments de la modale ---
     const modal = document.querySelector('#modale');
     const vueGalerie = document.getElementById('vue-galerie');
     const vueAjout = document.getElementById('vue-ajout');
@@ -182,6 +204,7 @@ if (token) {
     const selectCategorie = document.getElementById('categorie');
     const btnValiderForm = document.getElementById('btn-valider-form');
 
+    // --- Ouverture de la modale (vue galerie) ---
     btnModifier.addEventListener('click', () => {
         modal.style.display = 'block';
         vueGalerie.style.display = 'block';
@@ -189,6 +212,7 @@ if (token) {
         afficherModaleGalerie();
     });
 
+    // --- Passage à la vue ajout + chargement des catégories dans le select ---
     btnAjouterPhoto.addEventListener('click', () => {
         vueGalerie.style.display = 'none';
         vueAjout.style.display = 'block';
@@ -203,12 +227,15 @@ if (token) {
         });
     });
 
+    // --- Retour à la vue galerie + reset du formulaire ---
     btnRetour.addEventListener('click', () => {
         vueAjout.style.display = 'none';
         vueGalerie.style.display = 'block';
         resetFormulaire();
     });
 
+
+    // === Modale : Preview image + vérif taille ===
 if (inputFile) {
     inputFile.addEventListener('change', () => {
         const file = inputFile.files[0];
@@ -239,6 +266,7 @@ if (inputFile) {
     });
 }
 
+    // ==== Validation du formulaire (bouton activé si formulaire plein) ==== 
     function verifierFormulaire() {
         const isImageLoaded = inputFile.files.length > 0;
         const isTitreFilled = inputTitre.value.trim() !== "";
@@ -256,6 +284,7 @@ if (inputFile) {
     inputTitre.addEventListener('input', verifierFormulaire);
     selectCategorie.addEventListener('change', verifierFormulaire);
 
+    // ==== Envoi du nouveau projet (POST avec FormData + token) ====
     formAjout.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -272,6 +301,7 @@ if (inputFile) {
 
         if (response.ok) {
             const nouveauProjet = await response.json();
+            nouveauProjet.categoryId = parseInt(nouveauProjet.categoryId);
             works.push(nouveauProjet);
             afficherProjets();
             resetFormulaire();
@@ -282,6 +312,7 @@ if (inputFile) {
         }
     });
 
+    // --- Fermeture de la modale (overlay + croix) + reset du formulaire ---
     document.querySelectorAll('.btn-fermer').forEach(btn => {
         btn.addEventListener('click', () => {
             modal.style.display = 'none';
@@ -294,7 +325,7 @@ if (inputFile) {
         resetFormulaire();
     });
 }
-
+// ==== Reset du formulaire d'ajout =====
 function resetFormulaire() {
     const form = document.getElementById('form-ajout');
     if (form) form.reset();

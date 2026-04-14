@@ -1,5 +1,7 @@
+// --- récupération du formulaire de connexion ---
 const form = document.querySelector('form');
 
+// --- écoute de l'événement de soumission du formulaire ---
 form.addEventListener('submit', async function(event) {
     event.preventDefault();
     
